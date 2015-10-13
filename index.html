@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <title>preloadimg</title>
+    <style>
+        body{
+            margin:0;
+            padding:0;
+            height: 100%;
+            overflow: hidden;
+        }
+        .box{
+            width: 100%;
+            height: 100%;
+
+        }
+        img{
+            width: 100%;
+        }
+        .loading{
+            position: absolute;
+            z-index: 1;
+            background: #ccc;
+            width:100%;
+            height:100%;
+            overflow: hidden;
+        }
+
+        .loading p{
+            position: absolute;
+            height: 1em;
+            top:0;
+            left:0;
+            right:0;
+            bottom:0;
+            margin:auto;
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+<body>
+
+
+
+    <div class="box">
+
+        <div class="loading" id="loading"><p>loading...0%</p></div>
+
+        <img src="http://img.wallpapersking.com/d7/2015-10/2015100507172.jpg" alt=""/>
+        <img src="http://img.wallpapersking.com/800/2015-10/2015100507171.jpg" alt=""/>
+        <img src="http://img.wallpapersking.com/800/2015-10/2015100507173.jpg" alt=""/>
+        <img src="http://img.wallpapersking.com/800/2015-10/2015100507174.jpg" alt=""/>
+        <img src="http://img.wallpapersking.com/800/2015-10/2015100507175.jpg" alt=""/>
+        <img src="http://img.wallpapersking.com/800/2015-9/2015090107231.jpg" alt=""/>
+        <img src="http://img.wallpapersking.com/800/2015-9/2015090107232.jpg" alt=""/>
+        <img src="http://img.wallpapersking.com/800/2015-9/2015090107233.jpg" alt=""/>
+        <img src="http://img.wallpapersking.com/800/2015-9/2015090107234.jpg" alt=""/>
+        <img src="http://img.wallpapersking.com/800/2015-9/2015090107235.jpg" alt=""/>
+
+
+    </div>
+
+
+    <script>
+
+        var doc =document;
+        var imgDom=doc.getElementsByTagName('img');
+        var len = imgDom.length;
+        var imgarr= new Array();
+        var cur = 0;
+
+
+        for(var j= 0; j<len ; j++){
+            imgarr.push(imgDom[j].src);
+
+        }
+
+        for(var i=0; i<len; i++){
+            loadImage(imgarr[i],function(){
+                cur=cur+1;
+                var progress = cur/len * 100;
+                doc.getElementById('loading').childNodes[0].innerHTML='loading...'+progress+'%';
+
+                if(cur==len){
+                    loaded();
+                }
+            });
+
+        }
+
+        function loadImage(url, callback) {
+            var img = new Image();
+            img.src = url;
+            img.onload = function(){ //图片下载完毕时异步调用callback函数。
+                callback.call(img); // 将callback函数this指针切换为img。
+            };
+        }
+
+
+
+        var loaded=function(){
+            doc.getElementById('loading').style.display='none';
+        };
+
+    </script>
+
+</body>
+</html>
